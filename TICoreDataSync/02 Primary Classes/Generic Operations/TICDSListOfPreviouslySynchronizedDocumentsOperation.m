@@ -93,10 +93,11 @@
         [[self availableDocuments] addObject:dictionary];
     }
     
-    if( [self numberOfInfoDictionariesToFetch] == [self numberOfInfoDictionariesFetched] ) {
+    if( [self numberOfInfoDictionariesToFetch] == [self numberOfInfoDictionariesFetched] + [self numberOfInfoDictionariesThatFailedToFetch]
+       && [self numberOfInfoDictionariesThatFailedToFetch] != [self numberOfInfoDictionariesToFetch]) {
         TICDSLog(TICDSLogVerbosityStartAndEndOfEachOperationPhase, @"Finished fetching info dictionaries");
         [self beginFetchOfLastSynchronizationDates];
-    } else if( [self numberOfInfoDictionariesFetched] + [self numberOfInfoDictionariesThatFailedToFetch] == [self numberOfInfoDictionariesToFetch] ) {
+    } else if([self numberOfInfoDictionariesThatFailedToFetch] == [self numberOfInfoDictionariesToFetch] ) {
         TICDSLog(TICDSLogVerbosityErrorsOnly, @"An error occurred fetching one or more info dictionaries");
         [self operationDidFailToComplete];
         return;
