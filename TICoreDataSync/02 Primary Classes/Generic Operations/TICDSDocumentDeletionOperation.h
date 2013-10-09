@@ -44,6 +44,11 @@
  This method must call `discoveredStatusOfTemporaryWholeStoreDirectory:` to indicate the status. */
 - (void)checkWhetherIdentifiedDocumentDirectoryExists;
 
+/** Check whether the document info plist exists.
+
+ This method must call `discoveredStatusOfTemporaryWholeStoreDirectory:` to indicate the status. */
+- (void)checkWhetherIdentifiedDocumentInfoPlistFileExists;
+
 /** Check whether the `identifier.plist` file for the specified document identifier exists.
  
  This method must call `discoveredStatusOfIdentifierPlistInDeletedDocumentsDirectory:` to indicate the status. */
@@ -73,6 +78,13 @@
  
  @param status The status of the directory: does exist, does not exist, or error (see `TICDSTypesAndEnums.h` for possible values). */
 - (void)discoveredStatusOfIdentifiedDocumentDirectory:(TICDSRemoteFileStructureExistsResponseType)status;
+
+/** Indicate the status of the document's info plist file.
+
+ If an error occurred, call `setError:` first, then specify `TICDSRemoteFileStructureExistsResponseTypeError` for `status`.
+
+ @param status The status of the file: does exist, does not exist, or error (see `TICDSTypesAndEnums.h` for possible values). */
+- (void)discoveredStatusOfIdentifiedDocumentInfoPlistFile:(TICDSRemoteFileStructureExistsResponseType)status;
 
 /** Indicate the status of an existing `identifier.plist` file in the `DeletedDocuments` directory.
  

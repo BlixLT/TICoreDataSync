@@ -21,6 +21,18 @@
     }
 }
 
+- (void)checkWhetherIdentifiedDocumentInfoPlistFileExists
+{
+    if ([[self fileManager] fileExistsAtPath:[self documentInfoPlistFilePath]])
+    {
+        [self discoveredStatusOfIdentifiedDocumentInfoPlistFile:TICDSRemoteFileStructureExistsResponseTypeDoesExist];
+    }
+    else
+    {
+        [self discoveredStatusOfIdentifiedDocumentInfoPlistFile:TICDSRemoteFileStructureExistsResponseTypeDoesNotExist];
+    }
+}
+
 - (void)checkForExistingIdentifierPlistInDeletedDocumentsDirectory
 {
     if( [[self fileManager] fileExistsAtPath:[self deletedDocumentsDirectoryIdentifierPlistFilePath]] ) {

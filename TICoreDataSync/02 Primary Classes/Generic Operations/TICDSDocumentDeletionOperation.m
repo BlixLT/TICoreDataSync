@@ -58,11 +58,46 @@
     }
 }
 
+- (void)beginCheckingForIdentifiedDocumentInfoPlistFile
+{
+    TICDSLog(TICDSLogVerbosityStartAndEndOfEachOperationPhase, @"Checking whether the identified document info plist (%@) exists", [self documentIdentifier]);
+
+    [self checkWhetherIdentifiedDocumentInfoPlistFileExists];
+}
+
+- (void)discoveredStatusOfIdentifiedDocumentInfoPlistFile:(TICDSRemoteFileStructureExistsResponseType)status
+{
+    switch( status ) {
+        case TICDSRemoteFileStructureExistsResponseTypeError:
+            TICDSLog(TICDSLogVerbosityErrorsOnly, @"Error checking whether the identified document info plist exists");
+            [self operationDidFailToComplete];
+            return;
+
+        case TICDSRemoteFileStructureExistsResponseTypeDoesExist:
+            TICDSLog(TICDSLogVerbosityEveryStep, @"Document info plist exists");
+
+            [self beginCopyingDocumentInfoPlistToDeletedDocumentsDirectory];
+            return;
+
+        case TICDSRemoteFileStructureExistsResponseTypeDoesNotExist:
+            TICDSLog(TICDSLogVerbosityEveryStep, @"Document info plist does not exist");
+
+            [self beginAlertToDelegateThatDocumentWillBeDeleted];
+            return;
+    }
+}
+
 #pragma mark Overridden Method
 - (void)checkWhetherIdentifiedDocumentDirectoryExists
 {
     [self setError:[TICDSError errorWithCode:TICDSErrorCodeMethodNotOverriddenBySubclass classAndMethod:__PRETTY_FUNCTION__]];
     [self discoveredStatusOfIdentifiedDocumentDirectory:TICDSRemoteFileStructureExistsResponseTypeError];
+}
+
+- (void)checkWhetherIdentifiedDocumentInfoPlistFileExists
+{
+    [self setError:[TICDSError errorWithCode:TICDSErrorCodeMethodNotOverriddenBySubclass classAndMethod:__PRETTY_FUNCTION__]];
+    [self discoveredStatusOfIdentifiedDocumentInfoPlistFile:TICDSRemoteFileStructureExistsResponseTypeError];
 }
 
 #pragma mark - Checking for Existing UUID.plist in DeletedDocuments
@@ -90,7 +125,7 @@
         case TICDSRemoteFileStructureExistsResponseTypeDoesNotExist:
             TICDSLog(TICDSLogVerbosityEveryStep, @"Plist file does not exist");
             
-            [self beginCopyingDocumentInfoPlistToDeletedDocumentsDirectory];
+            [self beginCheckingForIdentifiedDocumentInfoPlistFile];
             return;
     }
 }
@@ -120,7 +155,7 @@
     
     TICDSLog(TICDSLogVerbosityEveryStep, @"Deleted documentInfo.plist from the DeletedDocuments directory");
     
-    [self beginCopyingDocumentInfoPlistToDeletedDocumentsDirectory];
+    [self beginCheckingForIdentifiedDocumentInfoPlistFile];
 }
 
 #pragma mark Overridden Method
