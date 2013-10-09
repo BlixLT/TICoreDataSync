@@ -305,12 +305,34 @@
                 success = [[self fileManager] fileExistsAtPath:unzippedFilePath];
                 
                 if (!success) {
-                    [self setError:[TICDSError errorWithCode:TICDSErrorCodeFileManagerError underlyingError:anyError classAndMethod:__PRETTY_FUNCTION__]];
-                    [self downloadedWholeStoreFileWithSuccess:success];
-                    return;
+                    
+                    NSError *getContentsError = nil;
+                    NSArray *uzippedContentsArray = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:zipDecompressPath error:&getContentsError];
+                    NSString *unzippedFileName = nil;
+                    for (NSString *path in uzippedContentsArray) {
+                        if ([path hasPrefix:@"."] == NO) {
+                            unzippedFileName = [path copy];
+                        }
+                    }
+                    
+                    NSString *newUnzippedFilePath = nil;
+                    if (unzippedFileName) {
+                        newUnzippedFilePath = [zipDecompressPath stringByAppendingPathComponent:unzippedFileName];
+                    }
+                    
+                    success = (newUnzippedFilePath != nil) && [[self fileManager] fileExistsAtPath:newUnzippedFilePath];
+                    
+                    if (!success) {
+                        [self setError:[TICDSError errorWithCode:TICDSErrorCodeFileManagerError underlyingError:anyError classAndMethod:__PRETTY_FUNCTION__]];
+                        [self downloadedWholeStoreFileWithSuccess:success];
+                        return;
+                    } else {
+                        destPath = newUnzippedFilePath;
+                    }
+                    
+                } else {
+                    destPath = unzippedFilePath;
                 }
-                
-                destPath = unzippedFilePath;
             }
         }
         
