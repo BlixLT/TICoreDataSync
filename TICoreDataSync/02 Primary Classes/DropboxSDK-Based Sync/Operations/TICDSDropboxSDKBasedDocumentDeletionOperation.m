@@ -23,6 +23,14 @@
     [[self restClient] loadMetadata:[self documentDirectoryPath]];
 }
 
+- (void)checkWhetherIdentifiedDocumentInfoPlistFileExists
+{
+#if TARGET_OS_IPHONE
+    [[UIApplication sharedApplication] ticds_setNetworkActivityIndicatorVisible:YES];
+#endif
+    [[self restClient] loadMetadata:[self documentInfoPlistFilePath]];
+}
+
 - (void)checkForExistingIdentifierPlistInDeletedDocumentsDirectory
 {
 #if TARGET_OS_IPHONE
@@ -79,6 +87,18 @@
         [self discoveredStatusOfIdentifierPlistInDeletedDocumentsDirectory:![metadata isDeleted] ? TICDSRemoteFileStructureExistsResponseTypeDoesExist : TICDSRemoteFileStructureExistsResponseTypeDoesNotExist];
         return;
     }
+
+    if ([path isEqualToString:[self documentInfoPlistFilePath]])
+    {
+        if (metadata.isDeleted == NO)
+        {
+            [self discoveredStatusOfIdentifiedDocumentInfoPlistFile:TICDSRemoteFileStructureExistsResponseTypeDoesExist];
+        }
+        else
+        {
+            [self discoveredStatusOfIdentifiedDocumentInfoPlistFile:TICDSRemoteFileStructureExistsResponseTypeDoesNotExist];
+        }
+    }
 }
 
 - (void)restClient:(DBRestClient*)client metadataUnchangedAtPath:(NSString*)path
@@ -117,6 +137,12 @@
     
     if( [path isEqualToString:[self deletedDocumentsDirectoryIdentifierPlistFilePath]] ) {
         [self discoveredStatusOfIdentifierPlistInDeletedDocumentsDirectory:[error code] == 404 ? TICDSRemoteFileStructureExistsResponseTypeDoesNotExist : TICDSRemoteFileStructureExistsResponseTypeError];
+        return;
+    }
+
+    if ([path isEqualToString:[self documentInfoPlistFilePath]])
+    {
+        [self discoveredStatusOfIdentifiedDocumentInfoPlistFile:[error code] == 404 ? TICDSRemoteFileStructureExistsResponseTypeDoesNotExist : TICDSRemoteFileStructureExistsResponseTypeError];
         return;
     }
 }
