@@ -17,7 +17,9 @@
  The higher the level, the more information you will see in the console. Examine the `TICDSLogVerbosity` entries in `TICDSTypesAndEnums.h` for specific values.
  */
 
-#define TICDSLog(verbosity,...) [TICDSLog logWithVerbosity:verbosity information:[NSString stringWithFormat:@"%s : %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__]]]
+#define TICDSLog(someVerbosity,...) if( !(someVerbosity > (NSInteger) [TICDSLog verbosity]) ) { \
+[TICDSLog logWithVerbosity:someVerbosity information:[NSString stringWithFormat:@"%s : %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:__VA_ARGS__]]]; \
+}\
 
 @interface TICDSLog : NSObject {
 @private
