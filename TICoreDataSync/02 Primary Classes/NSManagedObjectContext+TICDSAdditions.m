@@ -17,7 +17,7 @@ NSString const* NSManagedObjectContextTICDSAdditionsSynchronizedKey = @"NSManage
 
 - (void)setDocumentSyncManager:(TICDSDocumentSyncManager *)documentSyncManager
 {
-    objc_setAssociatedObject(self, &NSManagedObjectContextTICDSAdditionsDocumentSyncManagerKey, documentSyncManager, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &NSManagedObjectContextTICDSAdditionsDocumentSyncManagerKey, documentSyncManager, OBJC_ASSOCIATION_ASSIGN);
 }
 
 - (TICDSDocumentSyncManager *)documentSyncManager
@@ -27,7 +27,7 @@ NSString const* NSManagedObjectContextTICDSAdditionsSynchronizedKey = @"NSManage
 
 - (void)setSynchronized:(BOOL)synchronized
 {
-    objc_setAssociatedObject(self, &NSManagedObjectContextTICDSAdditionsSynchronizedKey, @(synchronized), OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &NSManagedObjectContextTICDSAdditionsSynchronizedKey, @(synchronized), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)isSynchronized
