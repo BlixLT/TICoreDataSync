@@ -51,7 +51,7 @@
 
     NSString *path = [metadata path];
     
-    if( [path isEqualToString:[self documentsDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self documentsDirectoryPath]] == NSOrderedSame ) {
         NSMutableArray *documentIdentifiers = [NSMutableArray arrayWithCapacity:[[metadata contents] count]];
         
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
@@ -67,7 +67,7 @@
         return;
     }
     
-    if( [[path lastPathComponent] isEqualToString:TICDSRecentSyncsDirectoryName] ) {
+    if( path != nil && [[path lastPathComponent] caseInsensitiveCompare:TICDSRecentSyncsDirectoryName] == NSOrderedSame ) {
         
         NSString *documentIdentifier = [path stringByDeletingLastPathComponent];
         documentIdentifier = [documentIdentifier lastPathComponent];

@@ -73,7 +73,7 @@
 
     NSString *path = [metadata path];
     
-    if( [path isEqualToString:[self documentDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self documentDirectoryPath]] == NSOrderedSame ) {
         if (metadata.isDeleted == NO) {
             [self discoveredStatusOfIdentifiedDocumentDirectory:TICDSRemoteFileStructureExistsResponseTypeDoesExist];
         } else {
@@ -83,12 +83,12 @@
         return;
     }
     
-    if( [path isEqualToString:[self deletedDocumentsDirectoryIdentifierPlistFilePath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self deletedDocumentsDirectoryIdentifierPlistFilePath]] == NSOrderedSame ) {
         [self discoveredStatusOfIdentifierPlistInDeletedDocumentsDirectory:![metadata isDeleted] ? TICDSRemoteFileStructureExistsResponseTypeDoesExist : TICDSRemoteFileStructureExistsResponseTypeDoesNotExist];
         return;
     }
 
-    if ([path isEqualToString:[self documentInfoPlistFilePath]])
+    if (path != nil && [path caseInsensitiveCompare:[self documentInfoPlistFilePath]] == NSOrderedSame)
     {
         if (metadata.isDeleted == NO)
         {

@@ -153,12 +153,12 @@
     NSString *path = [metadata path];
     TICDSRemoteFileStructureExistsResponseType status = [metadata isDeleted] ? TICDSRemoteFileStructureExistsResponseTypeDoesNotExist : TICDSRemoteFileStructureExistsResponseTypeDoesExist;
     
-    if( [path isEqualToString:[self thisDocumentTemporaryWholeStoreThisClientDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentTemporaryWholeStoreThisClientDirectoryPath]] == NSOrderedSame ) {
         [self discoveredStatusOfThisClientTemporaryWholeStoreDirectory:status];
         return;
     }
     
-    if( [path isEqualToString:[self thisDocumentWholeStoreThisClientDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentWholeStoreThisClientDirectoryPath]] == NSOrderedSame ) {
         [self discoveredStatusOfThisClientWholeStoreDirectory:status];
         return;
     }

@@ -250,22 +250,22 @@
     NSString *path = [metadata path];
     TICDSRemoteFileStructureExistsResponseType status = [metadata isDeleted] ? TICDSRemoteFileStructureExistsResponseTypeDoesNotExist : TICDSRemoteFileStructureExistsResponseTypeDoesExist;
     
-    if( [path isEqualToString:[self thisDocumentDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentDirectoryPath]] == NSOrderedSame ) {
         [self discoveredStatusOfRemoteDocumentDirectory:status];
         return;
     }
     
-    if( [path isEqualToString:[self thisDocumentSyncChangesThisClientDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentSyncChangesThisClientDirectoryPath]] == NSOrderedSame ) {
         [self discoveredStatusOfClientDirectoryInRemoteDocumentSyncChangesDirectory:status];
         return;
     }
     
-    if( [path isEqualToString:[self deletedDocumentsDirectoryIdentifierPlistFilePath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self deletedDocumentsDirectoryIdentifierPlistFilePath]] == NSOrderedSame ) {
         [self discoveredDeletionStatusOfRemoteDocument:[metadata isDeleted] ? TICDSRemoteFileStructureDeletionResponseTypeNotDeleted : TICDSRemoteFileStructureDeletionResponseTypeDeleted];
         return;
     }
     
-    if( [path isEqualToString:[self clientDevicesDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self clientDevicesDirectoryPath]] == NSOrderedSame ) {
         NSMutableArray *identifiers = [NSMutableArray arrayWithCapacity:[[metadata contents] count]];
         
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
@@ -280,7 +280,7 @@
         return;
     }
     
-    if( [[path lastPathComponent] isEqualToString:TICDSIntegrityKeyDirectoryName] ) {
+    if( path != nil && [[path lastPathComponent] caseInsensitiveCompare:TICDSIntegrityKeyDirectoryName] == NSOrderedSame ) {
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
             if( [[[eachSubMetadata path] lastPathComponent] length] < 5 ) {
                 continue;
@@ -295,7 +295,7 @@
         return;
     }
     
-    if( [[path stringByDeletingLastPathComponent] isEqualToString:[self thisDocumentDeletedClientsDirectoryPath]] ) {
+    if( path != nil && [[path stringByDeletingLastPathComponent] caseInsensitiveCompare:[self thisDocumentDeletedClientsDirectoryPath]] == NSOrderedSame ) {
         [self discoveredDeletionStatusOfClient:TICDSRemoteFileStructureDeletionResponseTypeDeleted];
         return;
     }
@@ -402,14 +402,14 @@
     
     [self setError:[TICDSError errorWithCode:TICDSErrorCodeDropboxSDKRestClientError underlyingError:error classAndMethod:__PRETTY_FUNCTION__]];
     
-    if( [path isEqualToString:[self thisDocumentSyncChangesThisClientDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentSyncChangesThisClientDirectoryPath]] == NSOrderedSame ) {
         _completedThisDocumentSyncChangesThisClientDirectory = YES;
         _errorCreatingThisDocumentSyncChangesThisClientDirectory = YES;
         [self checkForThisDocumentClientDirectoryCompletion];
         return;
     }
     
-    if( [path isEqualToString:[self thisDocumentSyncCommandsThisClientDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentSyncCommandsThisClientDirectoryPath]] == NSOrderedSame ) {
         _completedThisDocumentSyncCommandsThisClientDirectory = YES;
         _errorCreatingThisDocumentSyncCommandsThisClientDirectory = YES;
         [self checkForThisDocumentClientDirectoryCompletion];
@@ -423,13 +423,13 @@
 
 - (void)handleFolderCreatedAtPath:(NSString *)path
 {
-    if( [path isEqualToString:[self thisDocumentSyncChangesThisClientDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentSyncChangesThisClientDirectoryPath]] == NSOrderedSame ) {
         _completedThisDocumentSyncChangesThisClientDirectory = YES;
         [self checkForThisDocumentClientDirectoryCompletion];
         return;
     }
     
-    if( [path isEqualToString:[self thisDocumentSyncCommandsThisClientDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentSyncCommandsThisClientDirectoryPath]] == NSOrderedSame ) {
         _completedThisDocumentSyncCommandsThisClientDirectory = YES;
         [self checkForThisDocumentClientDirectoryCompletion];
         return;

@@ -222,17 +222,17 @@
     NSString *path = [metadata path];
     TICDSRemoteFileStructureExistsResponseType status = [metadata isDeleted] ? TICDSRemoteFileStructureExistsResponseTypeDoesNotExist : TICDSRemoteFileStructureExistsResponseTypeDoesExist;
     
-    if( [path isEqualToString:[self applicationDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self applicationDirectoryPath]] == NSOrderedSame ) {
         [self discoveredStatusOfRemoteGlobalAppDirectory:status];
         return;
     }
     
-    if( [path isEqualToString:[self encryptionDirectorySaltDataFilePath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self encryptionDirectorySaltDataFilePath]] == NSOrderedSame ) {
         [self discoveredStatusOfSaltFile:status];
         return;
     }
     
-    if( [path isEqualToString:[self clientDevicesThisClientDeviceDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self clientDevicesThisClientDeviceDirectoryPath]] == NSOrderedSame ) {
         [self discoveredStatusOfRemoteClientDeviceDirectory:status];
         return;
     }
