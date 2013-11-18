@@ -59,7 +59,7 @@
 
     NSString *path = [metadata path];
     
-    if( [path isEqualToString:[self thisDocumentSyncChangesDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentSyncChangesDirectoryPath]] == NSOrderedSame ) {
         NSMutableArray *clientIdentifiers = [NSMutableArray arrayWithCapacity:[[metadata contents] count]];
         
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
@@ -75,7 +75,7 @@
         return;
     }
     
-    if( [path isEqualToString:[self thisDocumentRecentSyncsDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentRecentSyncsDirectoryPath]] == NSOrderedSame ) {
         
         for( NSString *eachClientIdentifier in [self synchronizedClientIdentifiers] ) {
             DBMetadata *subMetadata = nil;
@@ -97,7 +97,7 @@
         return;
     }
     
-    if( [[path lastPathComponent] isEqualToString:TICDSWholeStoreFilename] ) {
+    if( path != nil && [[path lastPathComponent] caseInsensitiveCompare:TICDSWholeStoreFilename] == NSOrderedSame ) {
         [self fetchedModificationDate:[metadata lastModifiedDate] ofWholeStoreForClientWithIdentifier:[[path stringByDeletingLastPathComponent] lastPathComponent]];
         return;
     }

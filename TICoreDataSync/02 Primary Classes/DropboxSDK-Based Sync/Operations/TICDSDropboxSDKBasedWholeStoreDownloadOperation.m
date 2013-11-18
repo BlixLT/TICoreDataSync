@@ -102,7 +102,7 @@
 
     NSString *path = [metadata path];
     
-    if( [path isEqualToString:[self thisDocumentWholeStoreDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentWholeStoreDirectoryPath]] == NSOrderedSame ) {
         [self setWholeStoreModifiedDates:[NSMutableDictionary dictionaryWithCapacity:[[metadata contents] count]]];
         
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
@@ -131,7 +131,7 @@
         return;
     }
     
-    if( [[path stringByDeletingLastPathComponent] isEqualToString:[self thisDocumentWholeStoreDirectoryPath]] ) {
+    if( path != nil && [[path stringByDeletingLastPathComponent] caseInsensitiveCompare:[self thisDocumentWholeStoreDirectoryPath]] == NSOrderedSame ) {
         id modifiedDate = [NSNull null];
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
             if( [[[eachSubMetadata path] lastPathComponent] isEqualToString:TICDSWholeStoreFilename] ) {
@@ -150,7 +150,7 @@
         return;
     }
     
-    if( [[path lastPathComponent] isEqualToString:TICDSIntegrityKeyDirectoryName] ) {
+    if( path != nil && [[path lastPathComponent] caseInsensitiveCompare:TICDSIntegrityKeyDirectoryName] == NSOrderedSame ) {
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
             if( [[[eachSubMetadata path] lastPathComponent] length] < 5 ) {
                 continue;

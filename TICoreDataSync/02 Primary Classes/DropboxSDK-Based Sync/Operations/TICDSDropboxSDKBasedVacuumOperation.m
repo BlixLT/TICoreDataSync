@@ -51,7 +51,7 @@
 
     NSString *path = [metadata path];
     
-    if( [path isEqualToString:[self thisDocumentWholeStoreDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentWholeStoreDirectoryPath]] == NSOrderedSame ) {
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
             if( ![eachSubMetadata isDirectory] || [eachSubMetadata isDeleted] ) {
                 continue;
@@ -78,7 +78,7 @@
         return;
     }
     
-    if( [[path stringByDeletingLastPathComponent] isEqualToString:[self thisDocumentWholeStoreDirectoryPath]] ) {
+    if( path != nil && [[path stringByDeletingLastPathComponent] caseInsensitiveCompare:[self thisDocumentWholeStoreDirectoryPath]] == NSOrderedSame ) {
         
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
             if( [[[eachSubMetadata path] lastPathComponent] isEqualToString:TICDSWholeStoreFilename] ) {
@@ -112,7 +112,7 @@
         return;
     }
     
-    if( [path isEqualToString:[self thisDocumentRecentSyncsDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentRecentSyncsDirectoryPath]] == NSOrderedSame ) {
         
         NSDate *leastRecentSyncDate = nil;
         
@@ -141,7 +141,7 @@
         return;
     }
     
-    if( [path isEqualToString:[self thisDocumentSyncChangesThisClientDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentSyncChangesThisClientDirectoryPath]] == NSOrderedSame ) {
         
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
             if( [eachSubMetadata isDeleted] || [[eachSubMetadata lastModifiedDate] compare:[self earliestDateForFilesToKeep]] == NSOrderedDescending ) {

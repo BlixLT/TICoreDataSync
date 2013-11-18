@@ -107,7 +107,7 @@
     
     NSString *path = [metadata path];
     
-    if( [path isEqualToString:[self thisDocumentSyncChangesDirectoryPath]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[self thisDocumentSyncChangesDirectoryPath]] == NSOrderedSame ) {
         NSMutableArray *clientDeviceIdentifiers = [NSMutableArray arrayWithCapacity:[[metadata contents] count]];
         NSString *identifier = nil;
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
@@ -124,7 +124,7 @@
         return;
     }
     
-    if( [[path stringByDeletingLastPathComponent] isEqualToString:[self thisDocumentSyncChangesDirectoryPath]] ) {
+    if( path != nil && [[path stringByDeletingLastPathComponent] caseInsensitiveCompare:[self thisDocumentSyncChangesDirectoryPath]] == NSOrderedSame ) {
         if( ![self changeSetModificationDates] ) {
             [self setChangeSetModificationDates:[NSMutableDictionary dictionaryWithCapacity:20]];
         }
@@ -145,7 +145,7 @@
         [self builtArrayOfClientSyncChangeSetIdentifiers:syncChangeSetIdentifiers forClientIdentifier:[path lastPathComponent]];
     }
     
-    if( [[path lastPathComponent] isEqualToString:TICDSIntegrityKeyDirectoryName] ) {
+    if( path != nil && [[path lastPathComponent] caseInsensitiveCompare:TICDSIntegrityKeyDirectoryName] == NSOrderedSame ) {
         for( DBMetadata *eachSubMetadata in [metadata contents] ) {
             if( [[[eachSubMetadata path] lastPathComponent] length] < 5 ) {
                 continue;

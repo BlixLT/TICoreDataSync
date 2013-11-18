@@ -110,22 +110,22 @@
     NSString *path = [metadata path];
     TICDSRemoteFileStructureExistsResponseType status = [metadata isDeleted] ? TICDSRemoteFileStructureExistsResponseTypeDoesNotExist : TICDSRemoteFileStructureExistsResponseTypeDoesExist;
     
-    if( [path isEqualToString:[[self thisDocumentSyncChangesDirectoryPath] stringByAppendingPathComponent:[self identifierOfClientToBeDeleted]]] ) {
+    if( path != nil && [path caseInsensitiveCompare:[[self thisDocumentSyncChangesDirectoryPath] stringByAppendingPathComponent:[self identifierOfClientToBeDeleted]]] == NSOrderedSame ) {
         [self discoveredStatusOfClientDirectoryInDocumentSyncChangesDirectory:status];
         return;
     }
     
-    if( [[path stringByDeletingLastPathComponent] isEqualToString:[self thisDocumentDeletedClientsDirectoryPath]] ) {
+    if( path != nil && [[path stringByDeletingLastPathComponent] caseInsensitiveCompare:[self thisDocumentDeletedClientsDirectoryPath]] == NSOrderedSame ) {
         [self discoveredStatusOfClientIdentifierFileInDocumentDeletedClientsDirectory:status];
         return;
     }
     
-    if( [[path stringByDeletingLastPathComponent] isEqualToString:[self thisDocumentWholeStoreDirectoryPath]] ) {
+    if( path != nil && [[path stringByDeletingLastPathComponent] caseInsensitiveCompare:[self thisDocumentWholeStoreDirectoryPath]] == NSOrderedSame ) {
         [self discoveredStatusOfClientDirectoryInDocumentWholeStoreDirectory:status];
         return;
     }
     
-    if( [[path pathExtension] isEqualToString:TICDSRecentSyncFileExtension] ) {
+    if( path != nil && [[path pathExtension] caseInsensitiveCompare:TICDSRecentSyncFileExtension] == NSOrderedSame ) {
         [self discoveredStatusOfClientIdentifierFileInDocumentRecentSyncsDirectory:status];
         return;
     }
