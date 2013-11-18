@@ -2291,8 +2291,9 @@
 - (void)beginBackgroundTask
 {
 #if TARGET_OS_IPHONE
+    __weak typeof(self) weakSelf = self;
     self.backgroundTaskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-                                 [self endBackgroundTask];
+                                 [weakSelf endBackgroundTask];
                              }];
     TICDSLog(TICDSLogVerbosityEveryStep, @"Doc Sync Manager (%@), Task ID (%i) is begining.", [self class], self.backgroundTaskID);
 #endif
