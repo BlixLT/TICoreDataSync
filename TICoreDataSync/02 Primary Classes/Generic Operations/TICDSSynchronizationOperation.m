@@ -591,6 +591,7 @@
         NSArray *results = [self.backgroundApplicationContext executeFetchRequest:fetchRequest error:&anyError];
         if ([results count] == 0) {
             insertedObject = [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.backgroundApplicationContext];
+            [self.backgroundApplicationContext obtainPermanentIDsForObjects:@[insertedObject] error:nil];
             TICDSLog(TICDSLogVerbosityManagedObjectOutput, @"Inserted object: %@", insertedObject);
         } else {
             insertedObject = [results lastObject];
