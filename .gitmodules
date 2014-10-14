@@ -1,3 +1,6 @@
 [submodule "TICoreDataSync/04 Utilities/SSZipArchive"]
 	path = TICoreDataSync/04 Utilities/SSZipArchive
 	url = https://github.com/ChronicStim/ssziparchive
+[submodule "Submodules/DropboxSDK"]
+	path = Submodules/DropboxSDK
+	url = https://github.com/nothirst/dropbox-sdk-ios.git
